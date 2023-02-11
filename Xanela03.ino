@@ -38,59 +38,63 @@ void setup() {			// Aquí definimos as entradas e saídas dos pins + a velocidad
 void loop() {		          //Esta parte é na que se executa o código "bucle"       	
                           //Lectura dos pulsadores
   
-  if(digitalRead(pulsador)) {	      // Pulsador marcha/paro	
-    estado= (++estado) % 4; 	      // Actuaizacion do estado para estar entre 0 e 3.
-    
-    while(digitalRead(pulsador));{
+  if(digitalRead(pulsador)) {	            // Pulsador marcha/paro	(lectura = pulsación)
+    estado= (++estado) % 4; 	             /* Actualización do estado para estar entre 0 e 3.  
+                                             Isto signifa realizar a seguinte operación: Ao estado súmaselle unha unidade,e ese resultado divídese entre 4,
+                                             que vai dar 0, pero nesa división sempre hai un resto; que vai ser o valor empregado para actualizar o estado.*/
+     
+   while(digitalRead(pulsador));{        // Comando while; quere dicir que mentras fai a operación anterior espere 20 milisegundos
       delay(20);
       }
     }
   
- if(digitalRead(FcArriba)) {   // Fin Carreira posición superior
-   if(estado != 2 ) {			// Se o estado é distinto de 2, actualiza a 1
-      estado= 1;  				// Xanela parada arriba  
+ if(digitalRead(FcArriba)) {            // Fin Carreira posición superior
+   if(estado != 2 ) {			                // Se o estado é distinto de 2, actualiza a 1
+      estado= 1;  				                  // Xanela parada arriba  
    
    }
-   					// Xanela parada arriba
-      delay(20);
+      delay(20);                        // Esperar 20 milisegundos
    
   }
   
   
-  if(digitalRead(FcAbaixo)) {		// Fina carreira posición inferior
-     if(estado != 0 ) {
-    estado = 3;			// Xanela parada abaixo
+  if(digitalRead(FcAbaixo)) {	         	// Comando "if"; quere dicir que si se produce a lectura do Final carreira posición inferior (está activada), realice as seguintes accións:
+     if(estado != 0 ) {                 // Comando "if"; quere dicir que si o estado non é 0, que sexa 3 ( vese na seguinte liña)
+    estado = 3;			                     // Xanela parada abaixo
      }
-      delay(20);
+      delay(20);                       // Esperar 20 milisegundos
      
   } 
   
-  // fin lectura do pulsador
-  
+                          // fin lectura do pulsador
+ 
+                          // Comandos para a impresión de valores no monitor serie
   Serial.print("|  Estado Contador: ");
   Serial.println(estado);
    
-  // Accionamento dos motores
+                       // Accionamento dos motores
   
  
-    if(estado == 0 ) {
-      digitalWrite(motorArriba, HIGH);
-      digitalWrite(motorAbaixo, LOW);
-      delay(70);
+    if(estado == 0 ) {                      // Se o estado é 0, que realice as seguintes accións:
+      digitalWrite(motorArriba, HIGH);      // A saída dixital motorArriba que se active
+      digitalWrite(motorAbaixo, LOW);       // A saída dixital motorAbaixo que non se active (enclavamento)
+      delay(70);                            // Esperar 70 milisegundos antes de volver executar bucle
      
   }
-   else if (estado == 2) {
-     digitalWrite(motorArriba,LOW);
-     digitalWrite(motorAbaixo, HIGH);
-     delay(70);
+   else if (estado == 2) {                 /* Comandos "else" (senon fai isto) + "if" (si se cumple esto); no que queremos dicir que se o estado non é cero,
+                                             pero é dous, que realice as seguintes accións: */
+    
+     digitalWrite(motorArriba,LOW);       // A saída dixital motorArriba que non se active
+     digitalWrite(motorAbaixo, HIGH);    // A saída dixital motorAbaixo que se active
+     delay(70);                          // Agardar 70 milisegundos
     
    } 
-    else {
-      digitalWrite(motorArriba, LOW);
-     digitalWrite(motorAbaixo,LOW);
-     delay(70);
+    else {                              // Comando "else" (senon fai isto); no que di que se o estado non é 0 nin 3 que realice as seguintes accións:
+      digitalWrite(motorArriba, LOW);   // A saída dixital motorArriba que non se active
+     digitalWrite(motorAbaixo,LOW);    // A saída dixital motorAbaixo que non se active
+     delay(70);                        //  Agardar 70 milisegundos
    
       
     }
  }
-  
+                                                              //FIN PROCESO
